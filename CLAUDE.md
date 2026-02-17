@@ -124,7 +124,9 @@ Model configuration:
 - `shadow-intensity="2.5"` - Dramatic shadows
 - `exposure="0.4"` - Adjusted lighting
 - `interaction-prompt="none"` - Clean UX
-- All models located in `public/models/`
+- All models referenced as `/models/*.glb` (resolved from `public/`)
+
+**Build Process**: Vite copies everything from `public/` to `dist/` during `npm run build`. Models are served as static assets.
 
 **CRITICAL**: No Three.js, Canvas, or WebGL allowed per Protocol Rule #10.
 
@@ -281,6 +283,25 @@ Project documentation is maintained in `/docs`:
 4. Review browser console for errors
 5. Ensure `index.html:8` includes model-viewer CDN script
 6. Try stopping server and running `npm run dev` again
+
+### If Production Build Fails (Netlify/CI)
+**Most Common Issue**: Missing `autoprefixer` dependency
+
+The `postcss.config.js` requires `autoprefixer`, but it may not be in `package.json`. Fix:
+```bash
+npm install --save-dev autoprefixer
+git add package.json package-lock.json
+git commit -m "Add autoprefixer dependency"
+git push
+```
+
+After this fix, Netlify builds succeed. Verify locally with `npm run build`.
+
+**Other Build Issues**:
+- Check `package.json` has all required dependencies (see "Dependencies" above)
+- Ensure Node.js version matches local (18+)
+- Clear Netlify cache and rebuild
+- Check that `public/` folder is committed (contains models)
 
 ### If 3D Model Not Rendering
 1. Check browser WebGL support (visit: get.webgl.org)
