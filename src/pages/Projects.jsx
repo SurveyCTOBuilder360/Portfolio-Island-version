@@ -128,10 +128,10 @@ const Projects = () => {
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-6 py-2 rounded-full font-medium transition-all ${
+                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
                   filter === cat
-                    ? `${currentTheme.buttonPrimary} shadow-lg`
-                    : `${currentTheme.buttonSecondary}`
+                    ? `${currentTheme.buttonPrimary} shadow-lg active:scale-95`
+                    : `${currentTheme.buttonSecondary} active:scale-95`
                 }`}
               >
                 {cat}
@@ -141,11 +141,12 @@ const Projects = () => {
 
           {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map(project => (
+            {filteredProjects.map((project, index) => (
               <div
                 key={project.id}
-                className={`${currentTheme.cardBg} ${currentTheme.cardBorder} border rounded-xl overflow-hidden hover:shadow-2xl transition-all cursor-pointer group`}
+                className={`${currentTheme.cardBg} ${currentTheme.cardBorder} border rounded-xl overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group`}
                 onClick={() => setSelectedProject(project)}
+                style={{ animationDelay: `${index * 100}ms` }}
               >
                 {/* 3D Preview or Placeholder */}
                 <div className={`h-56 bg-gradient-to-br from-cyan-100 to-purple-100 relative overflow-hidden`}>

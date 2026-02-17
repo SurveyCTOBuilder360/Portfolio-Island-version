@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { animated } from '@react-spring/web';
 import { useTheme } from '../contexts/ThemeContext.jsx';
+import ParticleBackground from './ParticleBackground.jsx';
 
 const ThreeDScene = () => {
-  const { currentTheme } = useTheme();
+  const { currentTheme, theme } = useTheme();
   const [autoRotate, setAutoRotate] = useState(true);
   const [showCvModal, setShowCvModal] = useState(false);
+  const [modelLoaded, setModelLoaded] = useState(true);
 
   const toggleAutoRotate = () => {
     setAutoRotate(!autoRotate);
@@ -13,48 +15,18 @@ const ThreeDScene = () => {
 
   return (
     <div className={`relative min-h-screen ${currentTheme.background} overflow-hidden`}>
-      {/* Sky - Fullscreen Background (z-index: 0) */}
-      <div className="absolute inset-0 z-0">
-        <model-viewer
-          src="/models/sky.glb"
-          auto-rotate="false"
-          camera-controls="false"
-          disable-zoom
-          disable-pan
-          shadow-intensity="0"
-          exposure="0.8"
-          camera-orbit="0deg 90deg 0.5m"
-          className="w-full h-full"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            transform: 'scale(1.2)'
-          }}
-        />
-      </div>
+      {/* Rich creamy white background */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900"></div>
 
-      {/* Plane - Positioned above island (z-index: 10) */}
-      <div className="absolute top-16 right-1/3 z-10 w-28 h-28 md:w-36 md:h-36 pointer-events-none" style={{ animation: 'float 5s ease-in-out infinite 1s', background: 'transparent', cursor: 'default' }}>
-        <model-viewer
-          src="/models/plane.glb"
-          auto-rotate="false"
-          camera-controls="false"
-          disable-zoom
-          disable-pan
-          shadow-intensity="0"
-          exposure="0.7"
-          camera-orbit="60deg 30deg 4m"
-          style={{
-            width: '100%',
-            height: '100%',
-            background: 'transparent',
-            cursor: 'default'
-          }}
-        />
-      </div>
+      {/* Loading Spinner */}
+      {!modelLoaded && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center">
+          <div className="relative">
+            <div className={`w-16 h-16 border-4 ${theme === 'dark' ? 'border-amber-400/30' : 'border-amber-200'} rounded-full`}></div>
+            <div className={`absolute top-0 left-0 w-16 h-16 border-4 border-transparent ${theme === 'dark' ? 'border-t-amber-400' : 'border-t-amber-400'} rounded-full animate-spin`}></div>
+          </div>
+        </div>
+      )}
 
       {/* Island with Cottage - Fullscreen Main Interactive Layer (z-index: 20) */}
       <div className="absolute inset-0 z-20" style={{ pointerEvents: 'auto' }}>
@@ -62,8 +34,8 @@ const ThreeDScene = () => {
           src="/models/fantasy-cottage.glb"
           camera-controls
           auto-rotate={autoRotate}
-          shadow-intensity="2.5"
-          exposure="0.4"
+          shadow-intensity="1"
+          exposure="0.6"
           className="w-full h-full"
           style={{
             position: 'absolute',
@@ -73,6 +45,7 @@ const ThreeDScene = () => {
             height: '100%',
             pointerEvents: 'auto'
           }}
+          onLoad={() => setModelLoaded(true)}
         />
       </div>
 

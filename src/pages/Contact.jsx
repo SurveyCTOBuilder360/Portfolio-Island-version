@@ -219,13 +219,15 @@ const Contact = () => {
       </section>
 
       {/* Map or Additional CTA (optional) */}
-      <section className="py-16 px-4 bg-gradient-to-r from-cyan-600 to-purple-600 text-white">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-16 px-4 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 animate-pulse opacity-75"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIgZmlsbD0id2hpdGUiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-20"></div>
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-3xl font-bold mb-4">Interested in Conservation Tech?</h2>
           <p className="text-xl mb-8 opacity-90">I'm seeking opportunities to apply data science, automation, and AI for biodiversity conservation. Let's discuss how we can work together.</p>
           <a
             href="mailto:bijoykhiang97@gmail.com"
-            className="inline-block px-10 py-4 bg-white text-gray-900 font-bold rounded-lg hover:bg-gray-100 transition-colors text-lg"
+            className="inline-block px-10 py-4 bg-white text-gray-900 font-bold rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-xl text-lg"
           >
             Email Me Directly
           </a>

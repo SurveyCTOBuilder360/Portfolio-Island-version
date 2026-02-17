@@ -55,6 +55,18 @@ Protocol rule #10 - All 3D content must use HTML/CSS-only approach via model-vie
 - Brand hero text: "BIJOY KHIANG"
 - Font: Inter (Google Fonts)
 
+### Navigation System
+- **Desktop**: Horizontal bar with active route highlighting
+- **Mobile**: Slide-out panel with backdrop
+- **Theme switcher**: Integrated in both nav types
+- **Responsive behavior**: Hamburger menu on mobile
+
+### CV Modal System
+- **PDF Preview**: iframe with embedded PDF viewer
+- **Download Link**: Direct file download
+- **Responsive Layout**: Integrated panel on desktop, full-width on mobile
+- **Animation**: @react-spring fade/scale transitions
+
 ## Development Commands
 
 ```bash
@@ -87,13 +99,17 @@ src/
 ├── main.jsx                 # React entry: createRoot + BrowserRouter setup
 ├── App.jsx                  # Main layout: navigation bar + Routes container
 ├── index.css                # Tailwind directives + global styles + custom @keyframes
-├── components/
-│   ├── ThreeDScene.jsx      # 3D home page with model-viewer composition
-│   └── 3DObjects.jsx        # (exists but appears unused)
-└── pages/
-    ├── About.jsx            # Bio, skills, experience, tech stack, blog
-    ├── Projects.jsx         # Filterable grid with modal popups
-    └── Contact.jsx          # Contact form with validation
+├── contexts/               # React Context providers
+│   └── ThemeContext.jsx    # Theme management (Light/Dark/Professional)
+├── components/             # Reusable UI components
+│   ├── ThreeDScene.jsx     # 3D home page with model-viewer composition
+│   ├── ThemeSwitcher.jsx  # Theme selector dropdown
+│   ├── MobileMenu.jsx     # Responsive mobile navigation
+│   └── 3DObjects.jsx      # Unused Three.js wrapper component
+└── pages/                  # Page components
+    ├── About.jsx          # Bio, skills, experience section
+    ├── Projects.jsx       # Filterable project grid with modals
+    └── Contact.jsx        # Contact form with validation
 ```
 
 ### Routing (React Router v6+)
@@ -154,8 +170,14 @@ Model configuration:
 ### State Management
 - Local React state (`useState`) for component-specific state
 - Examples: modal open/close, form validation, auto-rotate toggle, project filtering
-- No global state management (Redux, Zustand, Context API for complex state)
-- Straightforward prop drilling where needed
+- **Theme Context** for global theme management with 3 variants:
+  - Light (Cyan & Blue gradient)
+  - Dark (Navy & Gold gradient)
+  - Professional (Emerald & Teal gradient)
+- Theme selection persists in local storage
+- Dynamic Tailwind classes applied based on theme context
+
+### Form Handling
 
 ### Form Handling
 - Contact form uses controlled components with `useState`
@@ -170,6 +192,10 @@ Model configuration:
 
 ### Unused Dependencies
 `package.json` (as read) includes no `@react-three/*`, `three`, or `gsap` - these have already been cleaned up. Current dependencies are minimal and match the actual codebase.
+
+### Unused Components
+- `3DObjects.jsx` - Contains Three.js component wrappers (unused due to protocol constraint)
+- `contexts/` directory contains only ThemeContext.jsx
 
 **Note**: If you see these packages in the future, they are likely leftovers from earlier iterations and should be removed.
 
@@ -337,6 +363,12 @@ npm run preview # Serves dist/ locally on port 4175 for testing
 5. For Netlify/Vercel: import Git repo, automatic deployment
 
 **Important**: The `index.html` loads model-viewer from CDN, so 3D works without local build dependencies.
+
+### Port Configuration
+Default dev server port: **3003** (not 3007 as mentioned in some documentation). If unavailable, modify `vite.config.js:7`:
+```javascript
+server: { port: 3003, open: true }
+```
 
 ---
 
