@@ -172,43 +172,47 @@ const ThreeDScene = () => {
 
       {/* CV Preview Modal */}
       {showCvModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={() => setShowCvModal(false)}>
-          <div className={`relative w-full max-w-4xl h-[90vh] ${currentTheme.cardBg} rounded-xl shadow-2xl overflow-hidden`} onClick={(e) => e.stopPropagation()}>
-            {/* Modal Header */}
-            <div className={`absolute top-0 left-0 right-0 z-10 ${currentTheme.cardBg} border-b ${currentTheme.cardBorder} px-6 py-4 flex items-center justify-between`}>
-              <h3 className={`text-xl font-bold ${currentTheme.text}`}>CV Preview - Bijoy Khiang</h3>
-              <button
-                onClick={() => setShowCvModal(false)}
-                className={`${currentTheme.textMuted} hover:${currentTheme.text} text-3xl font-bold focus:outline-none`}
-              >
-                ×
-              </button>
-            </div>
+        <div className="fixed inset-0 z-50 flex flex-col bg-black/80 backdrop-blur-sm" onClick={() => setShowCvModal(false)}>
+          {/* Mobile: Full screen, Desktop: Centered modal */}
+          <div className={`flex-shrink-0 ${currentTheme.cardBg} border-b ${currentTheme.cardBorder} px-4 md:px-6 py-3 flex items-center justify-between md:rounded-t-xl`}>
+            <h3 className={`text-lg md:text-xl font-bold ${currentTheme.text}`}>CV Preview - Bijoy Khiang</h3>
+            <button
+              onClick={() => setShowCvModal(false)}
+              className={`${currentTheme.textMuted} hover:${currentTheme.text} text-2xl md:text-3xl font-bold focus:outline-none p-1`}
+              aria-label="Close"
+            >
+              ×
+            </button>
+          </div>
 
-            {/* PDF Viewer */}
-            <div className="h-full pt-16">
-              <iframe
-                src="/bijoy-cv.pdf"
-                className="w-full h-full border-none"
-                title="CV Preview"
-              />
-            </div>
+          {/* Modal Content - Scrollable */}
+          <div className="flex-1 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="h-full flex flex-col md:flex-row max-w-[90vw] md:max-w-4xl w-full mx-auto">
+              {/* PDF Viewer */}
+              <div className="flex-1 bg-gray-200">
+                <iframe
+                  src="/bijoy-cv.pdf"
+                  className="w-full h-full min-h-[60vh] md:min-h-[calc(90vh-120px)] border-none"
+                  title="CV Preview"
+                />
+              </div>
 
-            {/* Modal Footer */}
-            <div className={`absolute bottom-0 left-0 right-0 z-10 ${currentTheme.cardBg} border-t ${currentTheme.cardBorder} px-6 py-4 flex justify-end gap-4`}>
-              <button
-                onClick={() => setShowCvModal(false)}
-                className={`px-6 py-2 ${currentTheme.buttonSecondary} font-semibold rounded-lg transition-colors`}
-              >
-                Close
-              </button>
-              <a
-                href="/bijoy-cv.pdf"
-                download="Bijoy_Khiang_CV.pdf"
-                className="px-6 py-2 bg-cyan-600 text-white font-semibold rounded-lg hover:bg-cyan-700 transition-colors"
-              >
-                Download CV
-              </a>
+              {/* Action Buttons - Sidebar on desktop, bottom on mobile */}
+              <div className={`${currentTheme.cardBg} border-t md:border-t-0 md:border-l ${currentTheme.cardBorder} p-4 md:p-6 flex md:flex-col justify-center items-center gap-3 md:gap-4`}>
+                <button
+                  onClick={() => setShowCvModal(false)}
+                  className={`w-full md:w-auto px-6 py-3 ${currentTheme.buttonSecondary} font-semibold rounded-lg transition-colors text-center`}
+                >
+                  Close
+                </button>
+                <a
+                  href="/bijoy-cv.pdf"
+                  download="Bijoy_Khiang_CV.pdf"
+                  className="w-full md:w-auto px-6 py-3 bg-cyan-600 text-white font-semibold rounded-lg hover:bg-cyan-700 transition-colors text-center"
+                >
+                  Download CV
+                </a>
+              </div>
             </div>
           </div>
         </div>
