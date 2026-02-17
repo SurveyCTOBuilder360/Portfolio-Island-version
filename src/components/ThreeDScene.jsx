@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { animated } from '@react-spring/web';
+import { useTheme } from '../contexts/ThemeContext.jsx';
 
 const ThreeDScene = () => {
+  const { currentTheme } = useTheme();
   const [autoRotate, setAutoRotate] = useState(true);
   const [showCvModal, setShowCvModal] = useState(false);
 
@@ -10,7 +12,7 @@ const ThreeDScene = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-white overflow-hidden">
+    <div className={`relative min-h-screen ${currentTheme.background} overflow-hidden`}>
       {/* Sky - Fullscreen Background (z-index: 0) */}
       <div className="absolute inset-0 z-0">
         <model-viewer
@@ -81,7 +83,7 @@ const ThreeDScene = () => {
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
         <div className="text-center max-w-4xl px-8 pointer-events-auto">
           <animated.h1
-            className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500 bg-clip-text text-transparent mb-6 drop-shadow-lg"
+            className={`text-5xl md:text-7xl font-bold bg-gradient-to-r ${currentTheme.accentGradient} bg-clip-text text-transparent mb-6 drop-shadow-lg`}
             style={{
               opacity: 0,
               y: -50,
@@ -93,36 +95,37 @@ const ThreeDScene = () => {
           </animated.h1>
 
           <animated.p
-            className="text-lg md:text-2xl text-gray-900 mb-8 max-w-2xl mx-auto drop-shadow-md"
+            className={`text-lg md:text-2xl ${currentTheme.textMuted} mb-8 max-w-2xl mx-auto drop-shadow-md`}
             style={{
               opacity: 0,
               y: -30,
               config: { duration: 1200, delay: 200 }
             }}
           >
-            Interactive 3D experiences powered by model-viewer
+            Technical Officer specializing in data automation and conservation tech
           </animated.p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <animated.button
-              className="px-8 py-4 bg-gray-900 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              className={`px-8 py-4 ${currentTheme.buttonPrimary} font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300`}
               style={{
                 opacity: 0,
                 y: -20,
                 config: { duration: 1400, delay: 400 }
               }}
             >
-              Explore Projects
+              View About
             </animated.button>
             <animated.button
-              className="px-8 py-4 bg-transparent border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-900 hover:text-white transform hover:scale-105 transition-all duration-300"
+              onClick={() => setShowCvModal(true)}
+              className={`px-8 py-4 ${currentTheme.buttonSecondary} font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300`}
               style={{
                 opacity: 0,
                 y: -20,
                 config: { duration: 1400, delay: 600 }
               }}
             >
-              View Demo
+              View CV
             </animated.button>
           </div>
         </div>
@@ -131,11 +134,11 @@ const ThreeDScene = () => {
       {/* Auto-Rotate Toggle - Top Right */}
       <button
         onClick={toggleAutoRotate}
-        className="absolute top-24 right-6 md:right-8 z-40 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-md border border-gray-200 hover:bg-white transition-all"
+        className={`absolute top-24 right-6 md:right-8 z-40 px-4 py-2 ${currentTheme.cardBg} backdrop-blur-sm rounded-lg shadow-md ${currentTheme.cardBorder} hover:opacity-90 transition-all`}
       >
-        <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
+        <div className="flex items-center gap-2 text-sm font-medium">
           <svg
-            className={`w-5 h-5 ${autoRotate ? 'text-cyan-600' : 'text-gray-400'}`}
+            className={`w-5 h-5 ${autoRotate ? currentTheme.accentText : 'text-gray-400'}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -147,7 +150,7 @@ const ThreeDScene = () => {
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             />
           </svg>
-          Auto-Rotate: {autoRotate ? 'ON' : 'OFF'}
+          <span className={currentTheme.text}>Auto-Rotate: {autoRotate ? 'ON' : 'OFF'}</span>
         </div>
       </button>
 
@@ -155,13 +158,13 @@ const ThreeDScene = () => {
       <div className="absolute bottom-24 right-6 md:right-8 z-40 flex flex-row gap-4">
         <a
           href="/projects"
-          className="inline-block px-8 py-4 bg-gray-900 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-800 transform hover:scale-105 transition-all duration-300"
+          className={`inline-block px-8 py-4 ${currentTheme.buttonPrimary} font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300`}
         >
-          Explore Projects
+          View Projects
         </a>
         <button
           onClick={() => setShowCvModal(true)}
-          className="inline-block px-8 py-4 bg-cyan-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-cyan-700 transform hover:scale-105 transition-all duration-300"
+          className={`inline-block px-8 py-4 bg-cyan-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-cyan-700 transform hover:scale-105 transition-all duration-300`}
         >
           View CV
         </button>
@@ -170,13 +173,13 @@ const ThreeDScene = () => {
       {/* CV Preview Modal */}
       {showCvModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={() => setShowCvModal(false)}>
-          <div className="relative w-full max-w-4xl h-[90vh] bg-white rounded-xl shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className={`relative w-full max-w-4xl h-[90vh] ${currentTheme.cardBg} rounded-xl shadow-2xl overflow-hidden`} onClick={(e) => e.stopPropagation()}>
             {/* Modal Header */}
-            <div className="absolute top-0 left-0 right-0 z-10 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-gray-900">CV Preview - Bijoy Khiang</h3>
+            <div className={`absolute top-0 left-0 right-0 z-10 ${currentTheme.cardBg} border-b ${currentTheme.cardBorder} px-6 py-4 flex items-center justify-between`}>
+              <h3 className={`text-xl font-bold ${currentTheme.text}`}>CV Preview - Bijoy Khiang</h3>
               <button
                 onClick={() => setShowCvModal(false)}
-                className="text-gray-500 hover:text-gray-700 text-3xl font-bold focus:outline-none"
+                className={`${currentTheme.textMuted} hover:${currentTheme.text} text-3xl font-bold focus:outline-none`}
               >
                 ×
               </button>
@@ -192,10 +195,10 @@ const ThreeDScene = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="absolute bottom-0 left-0 right-0 z-10 bg-white border-t border-gray-200 px-6 py-4 flex justify-end gap-4">
+            <div className={`absolute bottom-0 left-0 right-0 z-10 ${currentTheme.cardBg} border-t ${currentTheme.cardBorder} px-6 py-4 flex justify-end gap-4`}>
               <button
                 onClick={() => setShowCvModal(false)}
-                className="px-6 py-2 bg-gray-200 text-gray-900 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
+                className={`px-6 py-2 ${currentTheme.buttonSecondary} font-semibold rounded-lg transition-colors`}
               >
                 Close
               </button>

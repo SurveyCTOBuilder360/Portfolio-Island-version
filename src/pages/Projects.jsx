@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { animated, useSpring } from '@react-spring/web';
+import { useTheme } from '../contexts/ThemeContext.jsx';
 
 // Sample projects data - you can customize this
 const projectsData = [
   {
     id: 1,
-    title: 'Fantasy Cottage',
-    description: 'Interactive 3D cottage model with smooth animations and camera controls. Built with model-viewer for seamless web integration.',
+    title: 'Fantasy Cottage 3D Viewer',
+    description: 'Interactive 3D cottage model with smooth animations and camera controls. Built with Google model-viewer for seamless web integration.',
     fullDescription: 'This project showcases a detailed fantasy cottage rendered entirely in the browser using Google\'s model-viewer web component. The model features high-quality textures, realistic lighting, and smooth camera controls for an immersive viewing experience.',
     category: '3D',
-    tech: ['model-viewer', 'GLB', 'WebGL'],
+    tech: ['model-viewer', 'GLB', 'HTML5'],
     modelPath: '/models/fantasy-cottage.glb',
     image: null,
     github: '#',
@@ -17,11 +18,11 @@ const projectsData = [
   },
   {
     id: 2,
-    title: 'E-Commerce Dashboard',
-    description: 'Full-featured admin dashboard with real-time analytics, order management, and inventory tracking.',
-    fullDescription: 'A comprehensive e-commerce dashboard built with React, Tailwind CSS, and Chart.js. Features include real-time sales analytics, order management, inventory tracking, and customer insights. Fully responsive with dark mode support.',
+    title: 'Data Management Dashboard',
+    description: 'Admin dashboard for managing field surveys, data quality checks, and project monitoring. Built with React and Tailwind CSS.',
+    fullDescription: 'A comprehensive dashboard for managing field data collection projects. Features include survey progress tracking, real-time data quality indicators, automated reports, and team coordination tools.',
     category: 'Web',
-    tech: ['React', 'Tailwind', 'Chart.js', 'Node.js'],
+    tech: ['React', 'Tailwind CSS', 'Stata API', 'Power BI'],
     modelPath: null,
     image: null,
     github: '#',
@@ -29,11 +30,11 @@ const projectsData = [
   },
   {
     id: 3,
-    title: 'Mobile Fitness App',
-    description: 'Cross-platform fitness tracking app with workout plans, nutrition logging, and progress analytics.',
-    fullDescription: 'A React Native mobile application for fitness enthusiasts. Includes workout tracking, nutrition logging, progress charts, and social features. Integrated with Apple Health and Google Fit for seamless data synchronization.',
-    category: 'Mobile',
-    tech: ['React Native', 'Redux', 'Firebase', 'Health API'],
+    title: 'CATI Survey System',
+    description: 'Computer-Assisted Telephone Interviewing system built with ODK for automated phone surveys and data collection.',
+    fullDescription: 'A complete CATI solution built on ODK Central with automated calling workflows, real-time data collection, quality assurance checks, and comprehensive reporting. Used for large-scale household surveys.',
+    category: 'Data',
+    tech: ['ODK', 'Stata', 'React', 'Node.js'],
     modelPath: null,
     image: null,
     github: '#',
@@ -41,11 +42,11 @@ const projectsData = [
   },
   {
     id: 4,
-    title: 'AI Chat Assistant',
-    description: 'Intelligent chatbot powered by OpenAI API with custom fine-tuning for customer support.',
-    fullDescription: 'An AI-powered customer support chatbot built with OpenAI API and custom fine-tuning. Features natural language processing, context awareness, sentiment analysis, and seamless handoff to human agents.',
+    title: 'XLSForm AI Generator',
+    description: 'AI-powered tool that automatically generates ODK/KoBo survey forms from Word and PDF documents.',
+    fullDescription: 'An AI-driven system that uses large language models to transform structured documents into valid XLSForm survey instruments. Reduces form development time from days to minutes.',
     category: 'AI',
-    tech: ['OpenAI API', 'Node.js', 'WebSocket', 'React'],
+    tech: ['GPT-4', 'React', 'Python', 'Stata'],
     modelPath: null,
     image: null,
     github: '#',
@@ -53,11 +54,11 @@ const projectsData = [
   },
   {
     id: 5,
-    title: '3D Product Configurator',
-    description: 'Interactive product customization tool with real-time 3D preview, color selection, and pricing.',
-    fullDescription: 'A product configurator that allows customers to customize products in real-time with 3D visualization. Features include color/material selection, component swapping, real-time pricing updates, and AR preview.',
-    category: '3D',
-    tech: ['Three.js', 'React Three Fiber', 'GSAP', ' Stripe API'],
+    title: 'SurveyCTO Form Builder',
+    description: 'Interactive web-based form designer for SurveyCTO with drag-and-drop interface and real-time preview.',
+    fullDescription: 'A visual form builder that simplifies the creation of complex SurveyCTO forms. Features include drag-and-drop question types, conditional logic designer, and one-click deployment to SurveyCTO servers.',
+    category: 'Web',
+    tech: ['React', 'Tailwind', 'SurveyCTO API', 'XLSForm'],
     modelPath: null,
     image: null,
     github: '#',
@@ -65,11 +66,11 @@ const projectsData = [
   },
   {
     id: 6,
-    title: 'Blockchain Wallet',
-    description: 'Secure cryptocurrency wallet with multi-chain support, token swaps, and NFT gallery.',
-    fullDescription: 'A decentralized cryptocurrency wallet supporting multiple blockchains. Features include secure key management, token swaps via DEX aggregation, NFT gallery with 3D previews, and DeFi integration.',
-    category: 'Web3',
-    tech: ['Web3.js', 'React', 'Solidity', 'IPFS'],
+    title: 'Conservation Tech Portfolio',
+    description: 'Personal portfolio showcasing work in conservation technology, built with-react-spring animations and responsive design.',
+    fullDescription: 'This portfolio demonstrates expertise in both web development and conservation tech. Features include smooth animations, project showcase, and integration with 3D models to tell a compelling professional story.',
+    category: 'Web',
+    tech: ['React', 'Tailwind CSS', '@react-spring/web', 'model-viewer'],
     modelPath: null,
     image: null,
     github: '#',
@@ -77,9 +78,10 @@ const projectsData = [
   }
 ];
 
-const categories = ['All', 'Web', '3D', 'Mobile', 'AI', 'Web3'];
+const categories = ['All', 'Web', '3D', 'Data', 'AI'];
 
 const Projects = () => {
+  const { currentTheme } = useTheme();
   const [filter, setFilter] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
 
@@ -95,12 +97,12 @@ const Projects = () => {
   });
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className={`min-h-screen ${currentTheme.background}`}>
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-4 md:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
+      <section className={`pt-32 pb-16 px-4 md:px-8 ${currentTheme.heroBg}`}>
         <div className="max-w-6xl mx-auto text-center">
           <animated.h1
-            className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500 bg-clip-text text-transparent mb-6"
+            className={`text-5xl md:text-7xl font-bold bg-gradient-to-r ${currentTheme.accentGradient} bg-clip-text text-transparent mb-6`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -108,7 +110,7 @@ const Projects = () => {
             My Projects
           </animated.h1>
           <animated.p
-            className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto"
+            className={`text-xl md:text-2xl ${currentTheme.textMuted} mb-8 max-w-3xl mx-auto`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -119,7 +121,7 @@ const Projects = () => {
       </section>
 
       {/* Filter Buttons */}
-      <section className="py-8 px-4 md:px-8">
+      <section className={`py-8 px-4 md:px-8 ${currentTheme.sectionBg}`}>
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {categories.map(cat => (
@@ -128,8 +130,8 @@ const Projects = () => {
                 onClick={() => setFilter(cat)}
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   filter === cat
-                    ? 'bg-gray-900 text-white shadow-lg'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? `${currentTheme.buttonPrimary} shadow-lg`
+                    : `${currentTheme.buttonSecondary}`
                 }`}
               >
                 {cat}
@@ -142,11 +144,11 @@ const Projects = () => {
             {filteredProjects.map(project => (
               <div
                 key={project.id}
-                className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all cursor-pointer group"
+                className={`${currentTheme.cardBg} ${currentTheme.cardBorder} border rounded-xl overflow-hidden hover:shadow-2xl transition-all cursor-pointer group`}
                 onClick={() => setSelectedProject(project)}
               >
                 {/* 3D Preview or Placeholder */}
-                <div className="h-56 bg-gradient-to-br from-cyan-100 to-purple-100 relative overflow-hidden">
+                <div className={`h-56 bg-gradient-to-br from-cyan-100 to-purple-100 relative overflow-hidden`}>
                   {project.modelPath ? (
                     <model-viewer
                       src={project.modelPath}
@@ -157,28 +159,28 @@ const Projects = () => {
                       style={{ position: 'absolute', top: 0, left: 0 }}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-6xl">
+                    <div className={`w-full h-full flex items-center justify-center text-6xl ${currentTheme.background}`}>
                       🖥️
                     </div>
                   )}
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-sm font-medium text-gray-800">
+                  <div className={`absolute top-3 right-3 ${currentTheme.cardBg} backdrop-blur px-3 py-1 rounded-full text-sm font-medium ${currentTheme.text}`}>
                     {project.category}
                   </div>
                 </div>
 
                 <div className="p-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-cyan-600 transition-colors">
+                  <h3 className={`text-2xl font-bold ${currentTheme.text} mb-3 group-hover:${currentTheme.accentText.replace('text-', 'group-hover:')} transition-colors`}>
                     {project.title}
                   </h3>
-                  <p className="text-gray-600 mb-4 line-clamp-2">{project.description}</p>
+                  <p className={currentTheme.textMuted + ' mb-4 line-clamp-2'}>{project.description}</p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tech.map((t, i) => (
-                      <span key={i} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
+                      <span key={i} className={`px-3 py-1 rounded-full text-sm ${currentTheme.cardBg} ${currentTheme.cardBorder} border ${currentTheme.textMuted}`}>
                         {t}
                       </span>
                     ))}
                   </div>
-                  <button className="text-cyan-600 font-semibold hover:text-cyan-700">
+                  <button className={currentTheme.accentText + ' font-semibold hover:underline'}>
                     View Details →
                   </button>
                 </div>
@@ -196,15 +198,15 @@ const Projects = () => {
           onClick={() => setSelectedProject(null)}
         >
           <animated.div
-            className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+            className={`${currentTheme.cardBg} rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto ${currentTheme.cardBorder} border`}
             onClick={e => e.stopPropagation()}
           >
             <div className="p-8">
               <div className="flex justify-between items-start mb-6">
-                <h2 className="text-3xl font-bold text-gray-900">{selectedProject.title}</h2>
+                <h2 className={`text-3xl font-bold ${currentTheme.text}`}>{selectedProject.title}</h2>
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="text-gray-500 hover:text-gray-700 text-4xl leading-none"
+                  className={`${currentTheme.textMuted} hover:${currentTheme.text} text-4xl leading-none`}
                 >
                   ×
                 </button>
@@ -225,14 +227,14 @@ const Projects = () => {
               </div>
 
               <div className="mb-6">
-                <p className="text-lg text-gray-700 leading-relaxed">{selectedProject.fullDescription}</p>
+                <p className={`text-lg ${currentTheme.text} leading-relaxed`}>{selectedProject.fullDescription}</p>
               </div>
 
               <div className="mb-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Technologies</h3>
+                <h3 className={`text-xl font-bold ${currentTheme.text} mb-3`}>Technologies</h3>
                 <div className="flex flex-wrap gap-2">
                   {selectedProject.tech.map((t, i) => (
-                    <span key={i} className="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg font-medium">
+                    <span key={i} className={`px-4 py-2 rounded-lg font-medium ${currentTheme.cardBg} ${currentTheme.cardBorder} border ${currentTheme.textMuted}`}>
                       {t}
                     </span>
                   ))}
@@ -242,7 +244,7 @@ const Projects = () => {
               <div className="flex gap-4">
                 <a
                   href={selectedProject.github}
-                  className="px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+                  className={`px-6 py-3 ${currentTheme.buttonPrimary} font-semibold rounded-lg transition-colors`}
                 >
                   View Code
                 </a>
